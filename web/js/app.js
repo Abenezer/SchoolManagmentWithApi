@@ -9,7 +9,7 @@ var app = angular.module('SRMSApp',['ngRoute','ui.validate','ui.bootstrap']).
                 resolve: {isApproved: function () { return -1;  }   }
             }).
             when('/EditEmployee', {templateUrl: 'views/listEmployees.html',controller:ListEmpCtrl }).
-            when('/StudentStatus', {templateUrl: 'views/studentStatus.html'}).
+            when('/StudentStatus', {templateUrl: 'views/studentStatus.html',controller:studentStatusCtrl}).
             when('/ApprovedStudents', {templateUrl: 'views/listStudents.html',controller:ListStudentCtrl,
 
                 resolve: {
@@ -66,9 +66,123 @@ app.factory('AppAlert', function($rootScope){
 });
 
 
+app.service('authService',function(){
 
-app.controller('mainCtrl',function($scope,$modal,$http,$window){
+    var user = {};
 
+
+
+
+
+
+    return{
+        getUser: function(){
+
+
+         alert(user.role);
+
+              return user;
+        },
+
+        setUser: function(u)
+        {
+
+            user = u;
+        }
+
+    }
+
+
+});
+
+app.directive('restrict',function(authService){
+
+    return {
+        restrict: 'A',
+        priority: -10000,
+        scope: false,
+
+
+     compile: function(element,attrs,linker)
+        {
+            var accessDenied = true;
+
+
+            var user = authService.getUser();
+
+
+
+
+            var attributes = attrs.access.split(" ");
+            for(var i in attributes)
+            {
+                if(user.role==attributes[i]){
+                    accessDenied= false;
+                }
+            }
+
+            if(accessDenied){
+                element.children().remove();
+                element.remove();
+            }
+        }
+
+
+
+    }
+
+
+
+});
+
+
+
+
+
+
+app.controller('mainCtrl',function($scope,$modal,$http,$window,authService){
+
+
+    $scope.user = {};
+
+
+
+    $http.get('../api/login').success(function(data){
+
+
+        if(!data.loggedIn){
+
+
+
+            $window.location.href = "http://" + $window.location.host ;
+        }
+
+        else
+        {
+
+
+            $scope.user = true;
+
+
+
+
+
+
+
+        }
+
+
+    });
+
+
+
+    $scope.role = function(String)
+    {
+             return
+
+    }
+
+    $scope.admin = true;
 
     $scope.open = function () {
 
@@ -398,6 +512,7 @@ $scope.reset = function reset()
 
     $scope.delete = function(Course)
     {
+
         var modalInstance=  $modal.open({
             animation: true,
             templateUrl: 'views/deleteConform.html',
@@ -454,6 +569,9 @@ function enrollmentController($scope,$http,$filter,AppAlert)
 
     $scope.refresh= function()
     {
+
+        $scope.currentEnrolment= {};
+
         $http.get('../api/enrollments').success(function(data) {
             $scope.Enrollments = data;
         });
@@ -494,7 +612,7 @@ function enrollmentController($scope,$http,$filter,AppAlert)
 
         else
         {
-            AppAlert.add("danger", "Please Select Year and Course to Enroll Studnet!");
+            AppAlert.add("danger", "Please Select Year and Course to Enroll Student!");
         }
     }
 
@@ -510,11 +628,34 @@ function enrollmentController($scope,$http,$filter,AppAlert)
              }
 
         $scope.refresh();
-        AppAlert.add("success", addedEnrollments.size()+ " Enrollment(s) Added");
+
 
     }
 
 
+
+
+}
+
+
+function studentStatusCtrl($scope,$http)
+{
+    $scope.currentStudent = {};
+    $scope.currentStudent.approved = 0;
+    $scope.search = function(id)
+    {
+        $http.get('../api/student/'+id).success(function(data) {
+            $scope.currentStudent = data;
+        });
+
+    }
+
+    $scope.searchByName = function(FirstName,LastName)
+    {
+        $http.get('../api/student?FirstName='+FirstName+'&LastName='+LastName).success(function(data) {
+            $scope.currentStudent = data;
+        });
+    }
 
 
 }
