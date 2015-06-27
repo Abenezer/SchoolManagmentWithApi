@@ -1,0 +1,71 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>Untitled Document</title>
+</head>
+
+<body>
+<form action="../Controllers/RegisterEmployee.php" method="post" name="emForm" id="emForm">
+
+<fieldset>
+  <legend>General Info</legend>
+    <p>
+      <label for="empName">Employee Name:</label>
+      <input type="text" name="empName" id="empName">
+    </p>
+    <p>
+      <label for="gender">
+        Gender:</label>
+      <select name="gender" id="gender">
+        <option value="M">Male</option>
+        <option value="F">Female</option>
+      </select>
+    </p>
+    <p>
+      <label for="dob">
+        Date of Birth:</label>
+      <input type="date" name="dob" id="dob">
+    </p>
+  <fieldset>
+    <legend>User Info</legend>
+  
+      <p>
+        <label for="username">UserName:</label>
+        <input type="text" name="username" id="username">
+    </p>
+    <p>
+  <label for="password">
+    Password:</label>
+        <input type="password" name="password" id="password">
+    </p>
+    <p>
+        <label for="passwordRe">RetypePassword:</label>
+        <input type="password" name="passwordRe" id="passwordRe">
+      </p>
+    <fieldset>
+      <legend>Other Info</legend>
+      <p>
+        <label for="role">Role:</label>
+        <select name="role" id="role">
+          <option value="advisor">Advisor</option>
+          <option value="admin">Adminstrator</option>
+        </select>
+        </p>
+      <p>
+        <label for="mobileNumber">MobileNumber:</label>
+        <input type="tel" name="mobileNumber" id="mobileNumber">
+      </p>
+      <fieldset>
+        <p>
+          <input type="reset" name="reset" id="reset" value="Cancle">
+          <input type="submit" name="submit_btn" id="submit_btn" value="Register">
+        </p>
+      </fieldset>
+    </fieldset>
+   
+  </fieldset>
+</fieldset>
+</form>
+</body>
+</html>
