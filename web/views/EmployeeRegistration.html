@@ -1,0 +1,89 @@
+<form novalidate name="AddNewForm" ng-submit="add_emp(Employee)">
+
+    <fieldset>
+        <legend>General Info</legend>
+
+        <div class="form-group" ng-class="{ 'has-error' : AddNewForm.empName.$invalid && AddNewForm.empName.$touched }">
+            <label for="empName">EmployeeName*:</label>
+            <input type="text" name="empName" class="form-control" id="empName" ng-model="Employee.EmpName" required>
+
+            <p ng-show="AddNewForm.empName.$invalid && AddNewForm.empName.$touched" class="help-block">Employee Name is
+                required.</p>
+        </div>
+
+
+        <div class="form-group" ng-class="{ 'has-error' : AddNewForm.gender.$invalid && AddNewForm.gender.$touched }">
+            <label for="gender">
+                Gender*:</label>
+            <select name="gender" id="gender" class="form-control" ng-model="Employee.gender" required>
+                <option value="M">Male</option>
+                <option value="F">Female</option>
+            </select>
+
+            <p ng-show="AddNewForm.gender.$invalid && AddNewForm.gender.$touched" class="help-block">Gender is
+                required.</p>
+        </div>
+
+        <div class="form-group" ng-class="{ 'has-error' : AddNewForm.dob.$invalid && AddNewForm.dob.$touched }">
+            <label for="dob">
+                Date of Birth*:</label>
+            <input type="date" name="dob" class="form-control" id="dob" ng-model="Employee.dob" required>
+
+            <p ng-show="AddNewForm.dob.$invalid && AddNewForm.dob.$touched" class="help-block">Date is required.</p>
+        </div>
+    </fieldset>
+    <fieldset>
+        <legend>User Info</legend>
+
+        <div class="form-group" ng-class="{ 'has-error' : AddNewForm.username.$invalid && AddNewForm.username.$touched }">
+            <label for="username">UserName*:</label>
+            <input type="text" class="form-control" name="username" id="username" ng-model="Employee.username" required>
+            <p ng-show="AddNewForm.username.$invalid && AddNewForm.username.$touched " class="help-block">Gender is
+                required.</p>
+        </div>
+
+        <div class="form-group" ng-class="{ 'has-error' : AddNewForm.password.$invalid && AddNewForm.password.$touched }">
+            <label for="password">
+                Password*:</label>
+            <input type="password" class="form-control" name="password" id="password" ng-model="Employee.password" required>
+            <p ng-show="AddNewForm.password.$invalid && AddNewForm.password.$touched " class="help-block">Password is
+                required.</p>
+        </div>
+        <div class="form-group" ng-class="{ 'has-error' : AddNewForm.passwordRe.$error.validator && AddNewForm.passwordRe.$touched }">
+            <label for="passwordRe">RetypePassword:</label>
+            <input type="password" class="form-control" name="passwordRe" id="passwordRe" ng-model="Employee.rePassword"  ui-validate=" '$value==Employee.password' " ui-validate-watch=" 'Employee.password' " >
+            <span ng-show='AddNewForm.passwordRe.$error.validator && AddNewForm.passwordRe.$touched '>Passwords do not match!</span>
+        </div>
+    </fieldset>
+    <fieldset>
+        <legend>Other Info</legend>
+        <div class="form-group" ng-class="{ 'has-error' : AddNewForm.role.$invalid && AddNewForm.role.$touched }">
+            <label for="role">Role*:</label>
+            <select name="role" class="form-control"  id="role" ng-model="Employee.role" required>
+                <option value="Adviser">Adviser</option>
+                <option value="Admin">Administrator</option>
+            </select>
+            <p ng-show=" AddNewForm.role.$invalid && AddNewForm.role.$touched  " class="help-block">Role is
+                required.</p>
+
+        </div>
+        <div class="form-group" ng-class="{ 'has-error' : AddNewForm.mobileNumber.$invalid && AddNewForm.mobileNumber.$touched }">
+            <label for="mobileNumber">MobileNumber:</label>
+            <input type="tel" class="form-control" name="mobileNumber" id="mobileNumber" ng-model="Employee.mobileNumber" >
+        </div>
+    </fieldset>
+    <fieldset>
+        <p>
+
+            <button type="submit"  class="btn btn-success" style="width: 120px" ng-disabled="AddNewForm.$invalid" value="Register">Add</button>
+        </p>
+    </fieldset>
+
+</form>
+
+
+
+
+
+
+

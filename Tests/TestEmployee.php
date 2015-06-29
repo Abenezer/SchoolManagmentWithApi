@@ -22,7 +22,7 @@ class TestEmployee extends PHPUnit_Framework_TestCase {
     function  __construct()
     {
        $this->dao =  new EmployeeDAO();
-        $this->id = 12;
+        $this->id = 1;
     }
 
     private $id;

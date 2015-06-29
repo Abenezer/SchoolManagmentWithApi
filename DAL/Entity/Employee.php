@@ -9,7 +9,7 @@
 namespace Entity;
 
 
-class Employee {
+class Employee implements \JsonSerializable {
 
     private $EmpId;
     private $EmpName;
@@ -26,6 +26,21 @@ class Employee {
     private $password;
     private $role;
     private $mobileNumber;
+
+
+
+    public function parseJsonObject($e)
+    {
+        $this->EmpId = ($e->EmpId)?$e->EmpId:null;
+        $this->EmpName = $e->EmpName;
+        $this->dob = new \DateTime($e->dob);
+        $this->gender = $e->gender;
+        $this->username = $e->username;
+        $this->password = $e->password;
+        $this->mobileNumber = $e->mobileNumber;
+        $this->role = $e->role;
+
+    }
 
     /**
      * @return mixed
@@ -156,6 +171,17 @@ class Employee {
     }
 
 
-
-
+    /**
+     * (PHP 5 &gt;= 5.4.0)<br/>
+     * Specify data which should be serialized to JSON
+     * @link http://php.net/manual/en/jsonserializable.jsonserialize.php
+     * @return mixed data which can be serialized by <b>json_encode</b>,
+     * which is a value of any type other than a resource.
+     */
+    function jsonSerialize()
+    {
+        $vars = clone $this;
+        $vars->dob = $vars->dob->format("y/m/d");
+       return get_object_vars($vars);
+    }
 }

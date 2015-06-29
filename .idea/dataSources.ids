@@ -17,7 +17,7 @@
     </table>
     <table name="employee" schema="" catalog="srms_db" type="TABLE">
       <column name="EmpId" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4" autoIncrement="true"/>
-      <column name="EmpName" sqlType="VARCHAR" precision="10" scale="0" nullable="true" jdbcType="12"/>
+      <column name="EmpName" sqlType="VARCHAR" precision="20" scale="0" nullable="true" jdbcType="12"/>
       <column name="dob" sqlType="DATE" precision="10" scale="0" nullable="false" jdbcType="91" def="JzAwMDAtMDAtMDAn"/>
       <column name="gender" sqlType="CHAR" precision="1" scale="0" nullable="true" jdbcType="1"/>
       <column name="userName" sqlType="VARCHAR" precision="10" scale="0" nullable="true" jdbcType="12"/>
@@ -25,7 +25,6 @@
       <column name="role" sqlType="VARCHAR" precision="10" scale="0" nullable="true" jdbcType="12"/>
       <column name="mobileNumber" sqlType="VARCHAR" precision="10" scale="0" nullable="true" jdbcType="12"/>
       <primary-key name="PRIMARY" columns="EmpId"/>
-      <index name="EmpId" unique="true" columns="EmpId"/>
     </table>
     <table name="enrollment" schema="" catalog="srms_db" type="TABLE">
       <column name="student_Id" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4" def="MA=="/>
