@@ -15,8 +15,8 @@ class EnrollmentTest extends PHPUnit_Framework_TestCase {
 function testEnrollment()
 {
     $enrl = new \Entity\Enrollment();
-    $enrl->setCourseNumber("091");
-    $enrl->setStudentId(2);
+    $enrl->setCourseNumber("INSY");
+    $enrl->setStudentId(3);
     $enrl->setRegistrationDate(new DateTime());
     $enrl->setSemester(1);
     $enrl->setYear(3);
@@ -27,8 +27,8 @@ function testEnrollment()
     $enrl->setYear(4);
     $dao->updateEnrollment($enrl);
 
-    $enrl = $dao->getEnrollmentById(2,"091");
+    $enrl = $dao->getEnrollmentById(3,"INSY",false);
     assert($enrl->getYear()==4,"updating enrollment");
-    assert($dao->deleteEnrollment($enrl));
+    //assert($dao->deleteEnrollment($enrl));
 }
 }

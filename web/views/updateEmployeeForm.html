@@ -1,46 +1,47 @@
-
-
-
-
 <form novalidate name="UpdateEmpForm" ng-submit="update(Employee)">
 
-<fieldset>
-  <legend>General Info</legend>
-    <p>
-      <label for="empName">Employee Name:</label>
-      <input type="text" name="empName" id="empName" ng-model="Employee.EmpName">
-    </p>
-    <p>
-      <label for="dob">
-        Date of Birth:</label>
-      <input type="date" name="dob" id="dob" ng-model="Employee.dob" >
-    </p>
-</fieldset>
- 
     <fieldset>
-      <legend>Other Info</legend>
-      <p>
-        <label for="role">Role:</label>
-        <select name="role" id="role" ng-model="Employee.role">
-          <option value="Adviser">Adviser</option>
-          <option value="Admin">Administrator</option>
-        </select>
-        </p>
-      <p>
-        <label for="mobileNumber">MobileNumber:</label>
-        <input type="tel" name="mobileNumber" id="mobileNumber" ng-model="Employee.mobileNumber">
-      </p>
-    </fieldset>
-      <fieldset>
+        <legend>General Info</legend>
         <p>
-          <div class="btn-group" role="group" aria-label="...">
-          <button name="reset" class="btn btn-warning" id="reset" ng-click="cancel()" >Cancel</button>
-          <button type="submit" class="btn btn-success" name="submit_btn" id="submit_btn">Update</button>
-          </div>
+            <label for="empName">Employee Name:</label>
+            <input type="text" name="empName" class="form-control" id="empName" ng-model="Employee.EmpName">
         </p>
 
-  </fieldset>
-   
+        <p>
+            <label for="dob">
+                Date of Birth:</label>
+            <input type="date" name="dob" class="form-control" id="dob" ng-model="Employee.dob">
+        </p>
+    </fieldset>
+
+    <fieldset>
+        <legend>Other Info</legend>
+
+
+        <p>
+            <label for="role">Role:</label>
+            <select class="form-control" name="role" id="role" ng-model="Employee.role">
+                <option value="Adviser">Adviser</option>
+                <option value="Admin">Administrator</option>
+            </select>
+        </p>
+        <p>
+            <label for="mobileNumber">MobileNumber:</label>
+            <input class="form-control " type="tel" name="mobileNumber" id="mobileNumber"
+                   ng-model="Employee.mobileNumber">
+        </p>
+
+    </fieldset>
+    <fieldset>
+        <p>
+
+        <div class="btn-group" role="group" aria-label="...">
+            <button name="reset" class="btn btn-warning" id="reset" ng-click="cancel()">Cancel</button>
+            <button type="submit" class="btn btn-success" name="submit_btn" id="submit_btn">Update</button>
+        </div>
+        </p>
+
+    </fieldset>
 
 
 </form>

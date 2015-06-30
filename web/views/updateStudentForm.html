@@ -1,21 +1,30 @@
-
-<form id="form1" name="form1" method="post">
-  <fieldset>
-    <legend>Name</legend>
-    <p>
-      <label for="textfield">FirstName:</label>
-      <input type="text" name="textfield" id="textfield">
-    </p>
-    <p>
-      <label for="textfield2">LastName:</label>
-      <input type="text" name="textfield2" id="textfield2">
-    </p>
+<form novalidate name="UpdateEmpForm" ng-submit="update(Student)">
     <fieldset>
-      <legend>Other Info</legend>
-      <p>
-        <label for="date">Date of Birth:</label>
-        <input type="date" name="date" id="date">
-      </p>
+        <legend>Name</legend>
+        <p>
+            <label for="textfield">FirstName:</label>
+            <input class="form-control" type="text" name="textfield" id="textfield" ng-model="Student.FirstName">
+        </p>
+
+        <p>
+            <label for="textfield2">LastName:</label>
+            <input class="form-control" type="text" name="textfield2" id="textfield2" ng-model="Student.LastName">
+        </p></fieldset>
+    <fieldset>
+        <legend>Other Info</legend>
+        <p>
+            <label for="date">Date of Birth:</label>
+            <input class="form-control" type="date" name="date" id="date" ng-model="Student.dob">
+        </p>
     </fieldset>
-  </fieldset>
+    <fieldset>
+        <p>
+
+        <div class="btn-group" role="group" aria-label="...">
+            <button name="reset" class="btn btn-warning" id="reset" ng-click="cancel()">Cancel</button>
+            <button type="submit" class="btn btn-success" name="submit_btn" id="submit_btn">Update</button>
+        </div>
+        </p>
+
+    </fieldset>
 </form>

@@ -1,0 +1,94 @@
+<form novalidate name="AddNewForm" ng-submit="add_student(Student)">
+
+    <fieldset>
+        <legend>User Info</legend>
+
+        <div class="form-group"
+             ng-class="{ 'has-error' : AddNewForm.username.$invalid && AddNewForm.username.$touched }">
+            <label for="username">UserName*:</label>
+            <input type="text" class="form-control" name="username" id="username" ng-model="Student.username" required>
+
+            <p ng-show="AddNewForm.username.$invalid && AddNewForm.username.$touched " class="help-block">User Name is
+                required.</p>
+        </div>
+
+        <div class="form-group"
+             ng-class="{ 'has-error' : AddNewForm.password.$invalid && AddNewForm.password.$touched }">
+            <label for="password">
+                Password*:</label>
+            <input type="password" class="form-control" name="password" id="password" ng-model="Student.password"
+                   required>
+
+            <p ng-show="AddNewForm.password.$invalid && AddNewForm.password.$touched " class="help-block">Password is
+                required.</p>
+        </div>
+        <div class="form-group"
+             ng-class="{ 'has-error' : AddNewForm.passwordRe.$error.validator && AddNewForm.passwordRe.$touched }">
+            <label for="passwordRe">RetypePassword:</label>
+            <input type="password" class="form-control" name="passwordRe" id="passwordRe" ng-model="Student.passwordRe"
+                   ui-validate=" '$value==Student.password' " ui-validate-watch=" 'Student.password' ">
+            <span ng-show='AddNewForm.passwordRe.$error.validator && AddNewForm.passwordRe.$touched '
+                  class="help-block">Passwords do not match!</span>
+        </div>
+    </fieldset>
+
+
+    <fieldset>
+        <legend>General Info</legend>
+
+        <div class="form-group"
+             ng-class="{ 'has-error' : AddNewForm.FirstName.$invalid && AddNewForm.FirstName.$touched }">
+            <label for="fname">FirstName*:</label>
+            <input type="text" name="FirstName" class="form-control" id="fname" ng-model="Student.FirstName" required>
+
+            <p ng-show="AddNewForm.FirstName.$invalid && AddNewForm.FirstName.$touched" class="help-block">First Name is
+                required.</p>
+        </div>
+
+        <div class="form-group"
+             ng-class="{ 'has-error' : AddNewForm.LastName.$invalid && AddNewForm.LastName.$touched }">
+            <label for="Lname">LastName:</label>
+            <input type="text" name="student" class="form-control" id="Lname" ng-model="Student.LastName" required>
+        </div>
+
+        <div class="form-group" ng-class="{ 'has-error' : AddNewForm.gender.$invalid && AddNewForm.gender.$touched }">
+            <label for="gender">
+                Gender*:</label>
+            <select name="gender" id="gender" class="form-control" ng-model="Student.gender" required>
+                <option value="M">Male</option>
+                <option value="F">Female</option>
+            </select>
+
+            <p ng-show="AddNewForm.gender.$invalid && AddNewForm.gender.$touched" class="help-block">Gender is
+                required.</p>
+        </div>
+
+        <div class="form-group" ng-class="{ 'has-error' : AddNewForm.dob.$invalid && AddNewForm.dob.$touched }">
+            <label for="dob"> Date of Birth*:</label>
+            <input type="date" name="dob" class="form-control" id="dob" ng-model="Student.dob" required>
+
+            <p ng-show="AddNewForm.dob.$invalid && AddNewForm.dob.$touched" class="help-block">Date of birth is
+                required.</p>
+        </div>
+
+
+    </fieldset>
+
+
+    <fieldset>
+        <p>
+
+            <button type="submit" class="btn btn-success" style="width: 120px" ng-disabled="AddNewForm.$invalid"
+                    value="Register">Add
+            </button>
+        </p>
+    </fieldset>
+
+</form>
+
+
+
+
+
+
+

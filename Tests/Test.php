@@ -29,7 +29,7 @@ class Test extends PHPUnit_Framework_TestCase {
     }
 
 
-    public function testIntertCourse()
+    public function testInsertCourse()
     {
         $course = new Course();
         $course->setCourseNumber("091");
@@ -40,7 +40,7 @@ class Test extends PHPUnit_Framework_TestCase {
         $dao = new CourseDAO();
         $dao->insertCourse($course);
 
-       assert( $dao->getCourse("091")->getCourseName()=="IS");
+       assert( $dao->getCourseById("091")->getCourseName()=="IS");
 
     }
 
@@ -48,19 +48,19 @@ class Test extends PHPUnit_Framework_TestCase {
     public function testUpdate()
     {
         $dao = new CourseDAO();
-        $crs = $dao->getCourse("091");
+        $crs = $dao->getCourseById("091");
         $crs->setCourseName("IT");
 
         $dao->updateCourse($crs);
 
-        assert($dao->getCourse("091")->getCourseName()=="IT");
+        assert($dao->getCourseById("091")->getCourseName()=="IT");
 
     }
 
     public function testDelete()
     {
         $dao =new CourseDAO();
-        $crs= $dao->getCourse("091");
+        $crs= $dao->getCourseById("091");
 
 
         assert($dao->deleteCourse($crs));

@@ -9,7 +9,7 @@
 namespace Entity;
 
 
-class Student {
+class Student implements \JsonSerializable {
     private $student_id;
     Private $FirstName;
     Private $LastName;
@@ -18,8 +18,8 @@ class Student {
      */
     Private $dob;
     Private $gender;
-    Private $UserName;
-    Private $Password;
+    Private $username;
+    Private $password;
     /**
      * @var bool
      */
@@ -125,17 +125,17 @@ class Student {
     /**
      * @return mixed
      */
-    public function getUserName()
+    public function getUsername()
     {
-        return $this->UserName;
+        return $this->username;
     }
 
     /**
-     * @param mixed $UserName
+     * @param mixed $username
      */
-    public function setUserName($UserName)
+    public function setUsername($username)
     {
-        $this->UserName = $UserName;
+        $this->username = $username;
     }
 
     /**
@@ -143,18 +143,46 @@ class Student {
      */
     public function getPassword()
     {
-        return $this->Password;
+        return $this->password;
     }
 
     /**
-     * @param mixed $Password
+     * @param mixed $password
      */
-    public function setPassword($Password)
+    public function setPassword($password)
     {
-        $this->Password = $Password;
+        $this->password = $password;
     }
 
 
 
 
+    public function parseJsonObject($s)
+    {
+        $this->student_id = ($s->student_id)?$s->student_id:$this->student_id ;
+        $this->FirstName= ($s->FirstName)? $s->FirstName: $this->FirstName;
+        $this->LastName = ($s->LastName)?$s->LastName :$this->LastName ;
+        $this->dob = ($s->dob)? new \DateTime($s->dob):  $this->dob ;
+        $this->gender = ($s->gender)?$s->gender: $this->gender;
+        $this->username = ($s->username)?$s->username: $this->username;
+        $this->password = ($s->password)?$s->password:$this->password;
+
+
+
+    }
+
+
+    /**
+     * (PHP 5 &gt;= 5.4.0)<br/>
+     * Specify data which should be serialized to JSON
+     * @link http://php.net/manual/en/jsonserializable.jsonserialize.php
+     * @return mixed data which can be serialized by <b>json_encode</b>,
+     * which is a value of any type other than a resource.
+     */
+    function jsonSerialize()
+    {
+        $vars = clone $this;
+        $vars->dob = $vars->dob->format("y/m/d");
+        return get_object_vars($vars);
+    }
 }

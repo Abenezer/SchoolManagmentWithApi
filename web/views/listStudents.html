@@ -1,0 +1,30 @@
+<h2>Students</h2>
+
+<label> <input class="form-control" ng-model="search.student_id" placeholder="ID"></label>
+<label style="float: right"><input class="form-control" ng-model="search.FirstName" placeholder="Search..."></label>
+<table class="table table-condensed">
+    <thead>
+    <tr>
+        <th>FirstName</th>
+        <th>LastName</th>
+        <th>DOB</th>
+        <th>Gender</th>
+        <th>Action</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr ng-repeat="Student in Students | filter:search">
+        <td>{{Student.FirstName}}</td>
+        <td>{{Student.LastName}}</td>
+        <td>{{Student.dob}}</td>
+        <td>{{Student.gender}}</td>
+
+        <td>
+            <div class="btn-group" role="group" aria-label="...">
+                <button ng-disabled="actionDisabled" class="btn btn-warning" ng-click="delete(Student)">Delete</button>
+                <button ng-disabled="actionDisabled"  class="btn btn-primary" ng-click="update(Student)">Update</button>
+            </div>
+        </td>
+    </tr>
+    </tbody>
+</table>

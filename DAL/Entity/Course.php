@@ -8,12 +8,18 @@
 
 namespace Entity;
 
-class Course
+class Course implements \JsonSerializable
 {
     private $courseNumber;
     private $courseName;
     private $creditHour;
     private $contactHour;
+
+
+
+
+
+
 
     public function getCourseNumber()
     {
@@ -88,4 +94,29 @@ class Course
 //    }
 
 
+
+
+
+    public function parseJsonObject($c)
+    {
+        $this->courseNumber= ($c->courseNumber)? $c->courseNumber:$this->courseNumber;
+        $this->courseName= ($c->courseName)? $c->courseName:$this->courseName;
+        $this->creditHour= ($c->creditHour)? $c->creditHour:$this->creditHour;
+        $this->contactHour= ($c->contactHour)? $c->contactHour:$this->contactHour;
+
+
+    }
+
+
+    /**
+     * (PHP 5 &gt;= 5.4.0)<br/>
+     * Specify data which should be serialized to JSON
+     * @link http://php.net/manual/en/jsonserializable.jsonserialize.php
+     * @return mixed data which can be serialized by <b>json_encode</b>,
+     * which is a value of any type other than a resource.
+     */
+    function jsonSerialize()
+    {
+        return get_object_vars($this);
+    }
 }

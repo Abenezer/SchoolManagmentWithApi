@@ -1,34 +1,66 @@
 
-<body>
-<form id="addCourseForm" name="addCourseForm" method="post">
-  <fieldset>
-    <legend>Add new Course</legend>
-    <fieldset>
-      <legend>CourseInfo</legend>
-      <p>
-        <label for="courseNumber">CourseNumber:</label>
-        <input type="text" name="courseNumber" id="courseNumber">
-      </p>
-      <p>
-        <label for="courseName">CourseName:</label>
-        <input type="text" name="courseName" id="courseName">
-      </p>
+<table class="table table-condensed">
+    <thead>
+    <tr>
+        <th>CourseNumber</th>
+        <th>CourseName</th>
+        <th>CreditHour</th>
+        <th>ContactHour</th>
+        <th>Action</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr ng-repeat="Course in Courses">
+        <td>{{Course.courseNumber}}</td>
+        <td>{{Course.courseName}}</td>
+        <td>{{Course.creditHour}}</td>
+        <td>{{Course.contactHour}}</td>
+
+        <td>
+            <div class="btn-group" role="group" aria-label="...">
+                <button ng-disabled="actionDisabled" class="btn btn-warning" ng-click="delete(Course)">Delete</button>
+                <button ng-disabled="actionDisabled"  class="btn btn-primary" ng-click="startUpdate(Course)">Update</button>
+            </div>
+        </td>
+    </tr>
+    </tbody>
+</table>
+
+
+
+
+
+<h2>{{formHeader}}</h2>
+<form id="addCourseForm" name="addCourseForm" ng-submit="updateOrAdd(currentCourse)">
+
+
+        <fieldset>
+            <legend>CourseInfo</legend>
+            <p>
+                <label for="courseNumber">CourseNumber:</label>
+                <input ng-disabled="isUpdating" class="form-control" type="text" name="courseNumber" id="courseNumber" ng-model="currentCourse.courseNumber">
+            </p>
+
+            <p>
+                <label for="courseName">CourseName:</label>
+                <input class="form-control" type="text" name="courseName" id="courseName" ng-model="currentCourse.courseName">
+            </p>
     </fieldset>
     <fieldset>
-      <legend>Credit Info</legend>
-      <p>
-        <label for="creditHour">CreditHour:</label>
-        <input type="text" name="creditHour" id="creditHour">
-      </p>
-      <p>
-        <label for="contactHour">ContactHour:</label>
-        <input type="text" name="contactHour" id="contactHour">
-      </p>
+        <legend>Credit Info</legend>
+        <p>
+            <label for="creditHour">CreditHour:</label>
+            <input class="form-control" type="text" name="creditHour" id="creditHour" ng-model="currentCourse.creditHour">
+        </p>
+
+        <p>
+            <label for="contactHour">ContactHour:</label>
+            <input class="form-control" type="text" name="contactHour" id="contactHour" ng-model="currentCourse.contactHour">
+        </p>
     </fieldset>
     <p>
-      <input type="reset" name="reset" id="reset" value="Cancle">
-      <input type="submit" name="submit" id="submit" value="Add">
+        <button class="btn btn-warning" ng-click="reset()">Cancel</button>
+        <button type="submit" class="btn btn-success" name="submit" id="submit">{{submitText}}</button>
     </p>
-  </fieldset>
+
 </form>
-</body>

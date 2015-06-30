@@ -26,7 +26,7 @@ private $dao ;
         $std->setLastName("kebede");
         $std->setDob(new DateTime("12/10/2000"));
         $std->setGender("M");
-        $std->setUserName("abe");
+        $std->setUsername("abe");
         $std->setPassword("kebe");
         $std->setApproved(true);
 
@@ -40,6 +40,7 @@ private $dao ;
        $std = $this->dao->getStudentById(1);
         $std->setFirstName("helen");
         $std->setGender("F");
+
         $this->dao->updateStudent($std);
         assert($this->dao->getStudentById(1)->getFirstName()=="helen");
     }

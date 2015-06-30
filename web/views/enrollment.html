@@ -1,0 +1,64 @@
+<h3>Pending Students</h3>
+
+<table class="table table-condensed">
+    <thead>
+    <tr>
+        <th>ID</th>
+        <th>Name</th>
+        <th>Action</th>
+
+
+    </tr>
+    </thead>
+    <tbody>
+    <tr ng-repeat="student in pendingStudents">
+        <td>{{student.student_id}}</td>
+        <td>{{student.FirstName}} {{student.LastName}}</td>
+        <td><button ng-click="enroll(student)" class="btn btn-primary">>></button></td>
+
+    </tr>
+    </tbody>
+</table>
+
+
+
+
+
+    <form class="form-inline">
+<div class="form-group">
+<select name="year" id="yearSelect" class="form-control" ng-model="currentEnrolment.year" required>
+    <option value="" default selected>Year</option>
+    <option value="1">I</option>
+    <option value="2">II</option>
+    <option value="3">III</option>
+    <option value="4">IV</option>
+    <option value="5">V</option>
+</select>
+
+
+
+<select  name="course" id="courseSelect" class="form-control" ng-model="currentEnrolment.courseNumber" ng-options="course.courseNumber as course.courseName for course in Courses"  required >
+    <option value="" default selected>Course</option>
+</select>
+</div></form>
+
+<table class="table table-condensed">
+    <thead>
+    <tr>
+        <th>ID</th>
+        <th>Name</th>
+        <th>Registration Date</th>
+
+    </tr>
+    </thead>
+    <tbody>
+    <tr ng-repeat="enrollment in Enrollments | filter:currentEnrolment ">
+        <td>{{enrollment.Student.student_id}}</td>
+        <td>{{enrollment.Student.FirstName}} {{enrollment.Student.LastName}}</td>
+        <td>{{enrollment.registrationDate}}</td>
+
+    </tr>
+    </tbody>
+</table>
+<button class="btn btn-warning" ng-click="refresh()">Cancel</button>
+<button class="btn btn-success" ng-click="save()">Save</button>

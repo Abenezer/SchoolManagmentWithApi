@@ -2,24 +2,70 @@ var app = angular.module('SRMSApp',['ngRoute','ui.validate','ui.bootstrap']).
     config(function($routeProvider) {
         $routeProvider.
             when('/', {templateUrl: 'views/home.html'}).
-            when('/AddEmployee', {templateUrl: 'views/EmployeeRegistration.html',controller: AddCtrl}).
-            when('/CourseDetail', {templateUrl: 'views/CourseDetailForm.html'}).
-            when('/EnrollStudent', {templateUrl: 'views/Enroll.html'}).
-            when('/EditStudent', {templateUrl: 'views/updateStudentForm.html'}).
-            when('/EditEmployee', {templateUrl: 'views/listEmployees.html',controller:ListCtrl }).
+            when('/AddEmployee', {templateUrl: 'views/EmployeeRegistration.html',controller: registerEmpCrtl}).
+            when('/CourseDetail', {templateUrl: 'views/CourseDetailForm.html',controller:courseDetailCtrl}).
+            when('/EnrollStudent', {templateUrl: 'views/enrollment.html',controller:enrollmentController}).
+            when('/EditStudent', {templateUrl: 'views/listStudents.html',controller:ListStudentCtrl,
+                resolve: {isApproved: function () { return -1;  }   }
+            }).
+            when('/EditEmployee', {templateUrl: 'views/listEmployees.html',controller:ListEmpCtrl }).
             when('/StudentStatus', {templateUrl: 'views/studentStatus.html'}).
-            when('/ApprovedStudents', {templateUrl: 'views/approvedStudents.html'}).
-            when('/PendingStudents', {templateUrl: 'views/pendingStudents.html'}).
+            when('/ApprovedStudents', {templateUrl: 'views/listStudents.html',controller:ListStudentCtrl,
+
+                resolve: {
+                    isApproved: function () {
+
+                        return 1;
+                    }
+                }
+
+
+            }).
+            when('/PendingStudents', {templateUrl: 'views/listStudents.html',controller:ListStudentCtrl,
+
+                resolve: {
+                    isApproved: function () {
+
+                        return 0;
+                    }
+                }
+
+
+            }).
+            when('/RegisterStudent', {templateUrl: 'views/studentRegistration.html',controller:registerStudentCrtl}).
 
             when('/about', {templateUrl: 'views/about.html'}).
             otherwise({redirectTo: '/'});
     })
 
-
-
-
-
     ;
+
+
+
+app.factory('AppAlert', function($rootScope){
+    $rootScope.alerts = [];
+    var alertService = {};
+
+    alertService.add = function(type,msg)
+    {
+        $rootScope.alerts.push({'type': type,'msg': msg, close: function(){alertService.closeAlert(this)} });
+    }
+
+
+
+
+    alertService.closeAlert = function(alert)
+    {
+        $rootScope.alerts.splice( $rootScope.alerts.indexOf(alert), 1);
+
+    }
+
+
+    return alertService;
+
+});
+
+
 
 app.controller('mainCtrl',function($scope,$modal){
 
@@ -41,41 +87,46 @@ app.controller('mainCtrl',function($scope,$modal){
 
 
 
-
-
-
-
-function AddCtrl($scope, $http, $location) {
-    $scope.master = {};
+function registerEmpCrtl($scope, $http, $location) {
+   // $scope.master = {};
     $scope.activePath = null;
     $scope.add_emp = function(Employee) {
 
-        $http.post('../api/add_emp', Employee).success(function(){
+        $http.post('../api/employee', Employee).success(function(){
             $scope.reset();
-            $scope.activePath = $location.path('/');
+            $scope.activePath = $location.path('/EditEmployee');
         });
         $scope.reset = function() {
-            $scope.employee = angular.copy($scope.master);
+            $scope.employee = {};// angular.copy($scope.master);
         };
-        $scope.reset();
+       // $scope.reset();
     };
 }
 
-function ListCtrl($scope, $http,$modal,$log,$location) {
-    $http.get('../api/employees').success(function(data) {
-        $scope.Employees = data;
-    });
+function ListEmpCtrl($scope, $http,$modal,$log) {
+
+
+
+
+    function refresh()
+    {
+
+            $http.get('../api/employees').success(function(data) {
+                $scope.Employees = data;
+            });
+
+    }
+
+    refresh();
 
 
     $scope.update = function(Employee)
     {
 
-
-
-        var modalInstance =    $modal.open({
+        var modalInstance = $modal.open({
                 animation: true,
                 templateUrl: 'views/updateEmployeeForm.html',
-                controller: UpdateEmp,
+                controller: UpdateEmpCrtl,
                 resolve: {
                     Employee: function () {
                         return Employee;
@@ -84,18 +135,9 @@ function ListCtrl($scope, $http,$modal,$log,$location) {
 
             });
 
-        modalInstance.result.then(function (UpdatedEmployee) {
-
-            //   Employee.EmpName = UpdatedEmployee.EmpName;
-            $http.get('../api/employees').success(function(data) {
-                $scope.Employees = data;
-            });
-           // Employee.$apply();
-
-        }, function () {
-            $log.info('Modal dismissed at: ' + new Date());
-        });
+        modalInstance.result.then(refresh);
     };
+
 
 
     $scope.delete = function(Employee)
@@ -103,26 +145,22 @@ function ListCtrl($scope, $http,$modal,$log,$location) {
         var modalInstance=  $modal.open({
             animation: true,
             templateUrl: 'views/deleteConform.html',
-            controller:  DeleteEmp,
+            controller:  DeleteConformCtrl,
             resolve: {
-                Employee: function () {
-                    return Employee;
+                Name: function () {
+                    return Employee.EmpName;
                 }
             }
 
         });
+        modalInstance.result.then(function(Success){
 
-        modalInstance.result.then(function (success) {
+             if(Success)
+            $http['delete']('../api/employee/'+Employee.EmpId).success(function(){
 
-            if(success)
-            //   Employee.EmpName = UpdatedEmployee.EmpName;
-            $http.get('../api/employees').success(function(data) {
-                $scope.Employees = data;
+
+                refresh();
             });
-            // Employee.$apply();
-
-        }, function () {
-            $log.info('Modal dismissed at: ' + new Date());
         });
 
     }
@@ -130,7 +168,7 @@ function ListCtrl($scope, $http,$modal,$log,$location) {
 
 }
 
-function UpdateEmp($scope,$http,Employee,$modalInstance)
+function UpdateEmpCrtl($scope,$http,Employee,$modalInstance)
 {
 
     $scope.Employee= angular.copy(Employee);
@@ -143,7 +181,7 @@ function UpdateEmp($scope,$http,Employee,$modalInstance)
 
     $scope.update = function()
     {
-        $http.put('../api/update_emp', $scope.Employee).success(function(){
+        $http.put('../api/employee', $scope.Employee).success(function(){
 
             $modalInstance.close(true);
         });
@@ -151,13 +189,238 @@ function UpdateEmp($scope,$http,Employee,$modalInstance)
 
 }
 
-function DeleteEmp($scope,$http,Employee,$modalInstance)
+
+
+function registerStudentCrtl($scope,$http,$location)
 {
 
 
+    $scope.add_student = function(Student) {
 
-    $scope.name = Employee.EmpName;
+        $http.post('../api/student', Student).success(function(){
+
+            $scope.activePath = $location.path('/');
+
+        });
+        $scope.reset = function() {
+            $scope.Student = {};
+        };
+        //$scope.reset();
+    };
+
+
+}
+
+
+
+function ListStudentCtrl($scope, $http,$modal,isApproved) {
+
+
+
+
+   if(isApproved>=0) {
+       $scope.search = {};
+       $scope.search.approved = isApproved;
+
+       $scope.actionDisabled = true;
+
+   }
+
+
+
+    function refresh()
+    {
+
+            $http.get('../api/students').success(function(data) {
+                $scope.Students = data;
+            });
+
+    }
+
+    refresh();
+
+
+    $scope.update = function(Student)
+    {
+
+        var modalInstance = $modal.open({
+            animation: true,
+            templateUrl: 'views/updateStudentForm.html',
+            controller: UpdateStudentCrtl,
+            resolve: {
+                Student: function () {
+                    return Student;
+                }
+            }
+
+        });
+
+        modalInstance.result.then(refresh);
+    };
+
+
+
+    $scope.delete = function(Studnet)
+    {
+        var modalInstance=  $modal.open({
+            animation: true,
+            templateUrl: 'views/deleteConform.html',
+            controller:  DeleteConformCtrl,
+            resolve: {
+                Name: function () {
+                    return Studnet.FirstName+" "+Studnet.LastName;
+                }
+            }
+
+        });
+        modalInstance.result.then(function(Sucess)
+        {
+            $http['delete']('../api/student/'+Studnet.student_id).success(function(){
+
+
+                refresh()
+            });
+        });
+
+    }
+
+
+}
+
+function UpdateStudentCrtl($scope,$http,Student,$modalInstance)
+{
+
+    $scope.Student= angular.copy(Student);
+
     // $scope.Employee.dob= new Date($filter('date')($scope.Employee.dob, "yy/MM/dd")); // for type="date" binding
+    $scope.cancel = function(){
+
+        $modalInstance.close(false);
+    }
+
+    $scope.update = function()
+    {
+        $http.put('../api/student', $scope.Student).success(function(){
+
+            $modalInstance.close(true);
+        });
+    }
+
+}
+
+
+
+
+
+
+
+
+
+function courseDetailCtrl($scope, $http,$modal) {
+
+
+$scope.reset = function reset()
+{
+    $scope.isUpdating = false;
+    $scope.submitText = "Add";
+    $scope.formHeader = "Add new Course";
+    $scope.currentCourse = {};
+
+}
+
+
+
+
+    function refresh()
+    {
+
+            $http.get('../api/courses').success(function(data) {
+                $scope.Courses = data;
+            });
+
+        $scope.reset();
+
+    }
+
+    refresh();
+
+
+    $scope.startUpdate = function(Course)
+    {
+
+        $scope.submitText = "Update";
+        $scope.formHeader = "Update Course " + Course.courseNumber;
+        $scope.isUpdating = true;
+        $scope.currentCourse = angular.copy(Course);
+
+
+
+
+    }
+
+
+    $scope.updateOrAdd = function(Course)
+    {
+
+         if($scope.isUpdating) {
+
+             $http.put('../api/course', Course).success(function () {
+
+                 refresh(true);
+
+             });
+         }
+        else
+         {
+             $http.post('../api/course', Course).success(function(){
+
+                 refresh(true);
+
+             });
+
+
+         }
+
+
+    };
+
+
+
+    $scope.delete = function(Course)
+    {
+        var modalInstance=  $modal.open({
+            animation: true,
+            templateUrl: 'views/deleteConform.html',
+            controller:  DeleteConformCtrl,
+            resolve: {
+                Name: function () {
+                    return Course.courseName;
+                }
+            }
+
+        });
+        modalInstance.result.then(function(Success)
+        {
+            if(Success)
+            {
+                $http['delete']('../api/course/'+Course.courseNumber).success(function(){
+                    refresh();
+                });
+            }
+
+        });
+
+
+    }
+
+
+}
+
+
+function DeleteConformCtrl($scope,$http,Name,$modalInstance)
+{
+    $scope.name = Name;
+
     $scope.cancel = function(){
 
         $modalInstance.close(false);
@@ -165,31 +428,83 @@ function DeleteEmp($scope,$http,Employee,$modalInstance)
 
     $scope.delete = function()
     {
-        $http.get('../api/delete_emp/'+Employee.EmpId).success(function(){
+        $modalInstance.close(true);
 
-
-            $modalInstance.close(true);
-        });
     }
-
 }
 
 
 
+function enrollmentController($scope,$http,$filter,AppAlert)
+{
+    var addedEnrollments =[];
+    $http.get('../api/courses').success(function(data) {
+        $scope.Courses = data;
+    });
 
-/*
- var app=angular.module('single-page-app',['ngRoute']);
+    $scope.refresh= function()
+    {
+        $http.get('../api/enrollments').success(function(data) {
+            $scope.Enrollments = data;
+        });
 
- app.config(function($routeProvider){
- $routeProvider
- .when('/',{
- templateUrl: 'views/list.html'
- })
- .when('/about',{
- templateUrl: 'views/about.html'
- })
- .when('/blog',{
- templateUrl: 'views/blog.html'
- });
- });
- */
+        $http.get('../api/students').success(function(data) {
+
+            var filter = {};
+            filter.approved = 0;
+            $scope.pendingStudents= $filter('filter')(data, filter)
+
+        });
+
+
+    }
+
+
+    $scope.refresh();
+
+
+
+
+
+
+    $scope.enroll = function(Student)
+    {
+        if($scope.currentEnrolment.year && $scope.currentEnrolment.courseNumber )
+        {
+           var enrolment = angular.copy($scope.currentEnrolment);
+            enrolment.Student = Student;
+           var date = new Date();
+            enrolment.registrationDate =  (date.getMonth()+1)+'/'+ date.getDate()+'/'+date.getFullYear();
+
+            $scope.Enrollments.push(enrolment);
+            addedEnrollments.push(enrolment);
+
+        }
+
+
+        else
+        {
+            AppAlert.add("danger", "Please Select Year and Course to Enroll Studnet!");
+        }
+    }
+
+
+    $scope.save = function()
+    {
+
+        for(var x in addedEnrollments) {
+                 $http.post('../api/enrollment', addedEnrollments[x]).success(function () {
+
+
+                 });
+             }
+
+        $scope.refresh();
+        AppAlert.add("success", addedEnrollments.size()+ " Enrollment(s) Added");
+
+    }
+
+
+
+
+}

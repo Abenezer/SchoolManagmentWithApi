@@ -33,7 +33,7 @@ class CourseDAO {
       return $course;
     }
 
-    public  function getCourse($id)
+    public  function getCourseById($id)
     {
         $sql = "SELECT * FROM course WHERE courseNumber=?";
         $param = array($id);
@@ -51,7 +51,7 @@ class CourseDAO {
     /**
      * @return array
      */
-    public function getAllCourse()
+    public function getAllCourses()
     {
         $sql = "SELECT * FROM Course";
         $res = array();
@@ -71,7 +71,7 @@ class CourseDAO {
         $params = array($c->getCourseNumber(),$c->getCourseName(),$c->getCreditHour(),$c->getContactHour());
 
        $query= $this->db->prepare($sql);
-        $query->execute($params);
+        return $query->execute($params);
     }
     public function deleteCourse(Course $course)
     {

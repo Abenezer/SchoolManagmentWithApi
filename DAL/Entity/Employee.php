@@ -31,14 +31,14 @@ class Employee implements \JsonSerializable {
 
     public function parseJsonObject($e)
     {
-        $this->EmpId = ($e->EmpId)?$e->EmpId:null;
-        $this->EmpName = $e->EmpName;
-        $this->dob = new \DateTime($e->dob);
-        $this->gender = $e->gender;
-        $this->username = $e->username;
-        $this->password = $e->password;
-        $this->mobileNumber = $e->mobileNumber;
-        $this->role = $e->role;
+        $this->EmpId = ($e->EmpId)? $e->EmpId:$this->EmpId;
+        $this->EmpName = ($e->EmpName)? $e->EmpName:$this->EmpName;
+        $this->dob = ($e->dob)? new \DateTime($e->dob):  $this->dob ;
+        $this->gender = ($e->gender)?$e->gender: $this->gender;
+        $this->username = ($e->username)?$e->username: $this->username;
+        $this->password = ($e->password)?$e->password:$this->password;
+        $this->mobileNumber = ($e->mobileNumber)? $e->mobileNumber:$this->mobileNumber;
+        $this->role = ($e->role)?$e->role:$this->role;
 
     }
 

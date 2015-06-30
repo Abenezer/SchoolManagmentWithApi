@@ -2,8 +2,8 @@
 <head>
     <meta charset='utf-8'>
     <link href="css/bootstrap.min.css" rel="stylesheet"/>
-
-    <title>AngularJs</title>
+    <link href="css/style.css" rel="stylesheet"/>
+    <title>SRMS::Student Record Management System</title>
 
 <body ng-app="SRMSApp" ng-controller="mainCtrl">
 
@@ -81,10 +81,15 @@
 
 
 
-<div class="container">
-    <div ng-view></div>
+<div class="container" >
+    <div ng-view  ></div>
 </div>
 
+
+
+    <div>
+        <alert ng-repeat="alert in alerts" type="{{alert.type}}" close="alert.close()">{{ alert.msg }}</alert>
+    </div>
 fotter jkhfjkhlkasfdjldfsa
 jfhdkjshkdfshfkjhdskj
 jkfhksjdhfkjsahkjfadsh

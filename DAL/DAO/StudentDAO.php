@@ -23,7 +23,7 @@ class StudentDAO
         $this->db = Database::connect();
     }
 
-    public function getAllStudent()
+    public function getAllStudents()
     {
         $sql = "SELECT * FROM Student";
         $res = array();
@@ -51,7 +51,7 @@ class StudentDAO
     {
 
         $sql = "INSERT INTO Student  VALUES (?,?,?,?,?,?,?,?)";
-        $params = array($Student->getStudentId(),$Student->getFirstName(),$Student->getLastName(),$Student->getDob()->format("y/m/d"),$Student->getGender(),$Student->getUserName(),$Student->getPassword(),$Student->isApproved()) ;
+        $params = array($Student->getStudentId(),$Student->getFirstName(),$Student->getLastName(),$Student->getDob()->format("y/m/d"),$Student->getGender(),$Student->getUsername(),$Student->getPassword(),$Student->isApproved()) ;
         $stmt = $this->db->prepare($sql);
         $res = $stmt->execute($params);
         $Student->setStudentId($this->getLastId());

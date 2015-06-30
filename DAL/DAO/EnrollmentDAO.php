@@ -22,26 +22,26 @@ class EnrollmentDAO {
         $this->db = Database::connect();
     }
 
-    public function getAllEnrollments()
+    public function getAllEnrollments($isEager)
     {
         $sql = "SELECT * FROM enrollment";
         $res = array();
 
         foreach ($this->db->query($sql) as $row) {
 
-            array_push($res, $this->create_enrollment($row));
+            array_push($res, $this->create_enrollment($row,$isEager));
         }
         return $res;
 
 
     }
-    public function getEnrollmentById($student_id,$courseNumber)
+    public function getEnrollmentById($student_id,$courseNumber,$isEager)
     {
         $sql = "SELECT * FROM enrollment WHERE student_Id=? AND courseNumber=?" ;
         $query = $this->db->prepare($sql);
         $query->execute(array($student_id,$courseNumber));
         $row = $query->fetch(\PDO::FETCH_ASSOC);
-        return $this->create_enrollment($row);
+        return $this->create_enrollment($row,$isEager);
 
     }
 
@@ -85,7 +85,7 @@ class EnrollmentDAO {
 
     }
 
-    private function create_enrollment($row)
+    private function create_enrollment($row,$isEager)
     {
         $obj = new Enrollment();
 
@@ -94,6 +94,17 @@ class EnrollmentDAO {
         $obj->setRegistrationDate(new \DateTime($row["registrationDate"]));
         $obj->setSemester($row["semester"]);
         $obj->setYear($row["year"]);
+
+        if ($isEager) {
+            $courseDao = new CourseDAO();
+            $studentDap = new StudentDAO();
+            $obj->setCourse($courseDao->getCourseById($row["courseNumber"]));
+            $obj->setStudent($studentDap->getStudentById($row["student_Id"]));
+
+        }
+
+
+
         return $obj;
     }
 
