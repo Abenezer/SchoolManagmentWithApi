@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="dataSourceStorageLocal">
+    <data-source name="MySQL - srms_db@localhost" uuid="ed930754-d577-49a3-9f29-a5412ee60432">
+      <secret-storage>memory</secret-storage>
+      <user-name>root</user-name>
+      <schema-pattern>srms_db.*</schema-pattern>
+      <default-schemas>srms_db.*</default-schemas>
+    </data-source>
+  </component>
+</project>

@@ -1,0 +1,36 @@
+<html>
+<head>
+    <title>Login</title>
+    <link href="web/css/bootstrap.min.css" rel="stylesheet"/>
+</head>
+<body  ng-app="loginModule" >
+<div ng-controller="loginCtrl" style="width: 30%; text-align: right " >
+
+<form novalidate name="loginForm" ng-submit="login(user)">
+    <div class="form-group">
+        <input type="text" class="form-control" placeholder="UserName" ng-model="user.username"/>
+    </div>
+    <div class="form-group">
+        <input class="form-control" type="password" placeholder="Password" ng-model="user.password"/>
+
+  </div>
+    <button class="btn btn-warning" type="submit">Login</button>
+</form>
+
+
+
+
+</div>
+
+
+<div ng-controller="studentRegistrationCtrl"class="container">
+    <h2>Register As Student</h2>
+
+<div  ng-include="studentForm" ></div>
+</div>
+<script type="text/javascript" src="web/js/lib/angular.min.js"></script>
+<script type="text/javascript" src="web/js/lib/ui-validate.js"></script>
+<script type="text/javascript" src="web/js/lib/ui-bootstrap.js"></script>
+<script type="text/javascript" src="web/js/login.js"></script>
+</body>
+</html>
