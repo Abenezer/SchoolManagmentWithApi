@@ -9,6 +9,8 @@ require_once '../DAL/DAO/CourseDAO.php';
 require_once '../DAL/Database.php';
 require_once '../DAL/DAO/EnrollmentDAO.php';
 require_once '../DAL/Entity/Enrollment.php';
+require_once '../DAL/DAO/UserDAO.php';
+require_once '../DAL/Entity/User.php';
 use \Slim\Slim;
 use \Entity\Employee;
 use \DAO\EmployeeDAO;
@@ -42,7 +44,9 @@ $app->delete('/course/:id','deleteCourse');
 $app->get('/enrollments','getEnrollments');
 $app->post('/enrollment', 'addEnrollment');
 
-
+$app->post('/login', 'login');
+$app->get('/login', 'getStatus');
+$app->get('/logout', 'logout');
 
 $app->run();
 
@@ -264,4 +268,53 @@ function addEnrollment()
 
 }
 
+function login(){
+    $request = Slim::getInstance()->request();
 
+    $user = json_decode($request->getBody());
+
+    $dao = new \DAO\UserDAO();
+    session_start();
+     if($dao->validateUser($user->username,$user->password)) {
+
+         $u = $dao->getUserById($user->username);
+
+         $_SESSION["loggedIn"] = true;
+         $_SESSION["username"] = $u->getUsername();
+         $_SESSION["role"] = $u->getRole();
+     }
+    else
+    {
+
+       session_destroy();
+    }
+
+
+}
+
+
+function getStatus()
+{
+
+
+    $status = array("loggedIn"=>false,"username"=>"",'role'=>"");
+
+    session_start();
+    if(isset($_SESSION["loggedIn"])&&$_SESSION["loggedIn"])
+    $status = array("loggedIn"=>true,'username'=>$_SESSION["username"],'role'=>$_SESSION["role"]);
+
+
+
+    echo(json_encode($status));
+
+}
+
+
+
+function logout()
+{
+    session_start();
+    session_destroy();
+
+
+}

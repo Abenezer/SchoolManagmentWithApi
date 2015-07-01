@@ -67,7 +67,7 @@ app.factory('AppAlert', function($rootScope){
 
 
 
-app.controller('mainCtrl',function($scope,$modal){
+app.controller('mainCtrl',function($scope,$modal,$http,$window){
 
 
     $scope.open = function () {
@@ -81,6 +81,16 @@ app.controller('mainCtrl',function($scope,$modal){
 
 
     };
+
+    $scope.logout = function()
+    {
+        $http.get('../api/logout').success(function(){
+
+
+            $window.location.href ="http://" + $window.location.host
+
+        });
+    }
 
 });
 

@@ -21,7 +21,7 @@
       <column name="dob" sqlType="DATE" precision="10" scale="0" nullable="false" jdbcType="91" def="JzAwMDAtMDAtMDAn"/>
       <column name="gender" sqlType="CHAR" precision="1" scale="0" nullable="true" jdbcType="1"/>
       <column name="userName" sqlType="VARCHAR" precision="10" scale="0" nullable="true" jdbcType="12"/>
-      <column name="password" sqlType="VARCHAR" precision="10" scale="0" nullable="true" jdbcType="12"/>
+      <column name="password" sqlType="VARCHAR" precision="100" scale="0" nullable="true" jdbcType="12"/>
       <column name="role" sqlType="VARCHAR" precision="10" scale="0" nullable="true" jdbcType="12"/>
       <column name="mobileNumber" sqlType="VARCHAR" precision="10" scale="0" nullable="true" jdbcType="12"/>
       <primary-key name="PRIMARY" columns="EmpId"/>
@@ -43,10 +43,15 @@
       <column name="dob" sqlType="DATE" precision="10" scale="0" nullable="true" jdbcType="91"/>
       <column name="gender" sqlType="CHAR" precision="1" scale="0" nullable="false" jdbcType="1"/>
       <column name="UserName" sqlType="VARCHAR" precision="10" scale="0" nullable="true" jdbcType="12"/>
-      <column name="password" sqlType="VARCHAR" precision="10" scale="0" nullable="true" jdbcType="12"/>
+      <column name="password" sqlType="VARCHAR" precision="100" scale="0" nullable="true" jdbcType="12"/>
       <column name="approved" sqlType="BIT" precision="1" scale="0" nullable="false" jdbcType="-7" def="YicwJw=="/>
       <primary-key name="PRIMARY" columns="student_Id"/>
       <exported-key name="enrollment_ibfk_1" table="enrollment" schema="" catalog="srms_db" columns="student_Id"/>
+    </table>
+    <table name="users" schema="" catalog="srms_db" type="VIEW">
+      <column name="username" sqlType="VARCHAR" precision="10" scale="0" nullable="true" jdbcType="12"/>
+      <column name="password" sqlType="VARCHAR" precision="100" scale="0" nullable="true" jdbcType="12"/>
+      <column name="role" sqlType="VARCHAR" precision="10" scale="0" nullable="true" jdbcType="12"/>
     </table>
   </data-source>
 </component>
