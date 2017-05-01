@@ -25,6 +25,28 @@ class Student implements \JsonSerializable {
      */
     Private $approved;
 
+
+    /**
+     * @var array (list of enrollments )
+     */
+    private $enrollments;
+
+    /**
+     * @return array
+     */
+    public function getEnrollments()
+    {
+        return $this->enrollments;
+    }
+
+    /**
+     * @param array $enrollments
+     */
+    public function setEnrollments($enrollments)
+    {
+        $this->enrollments = $enrollments;
+    }
+
     /**
      * @return boolean
      */
@@ -153,6 +175,8 @@ class Student implements \JsonSerializable {
     {
         $this->password = $password;
     }
+
+
 
 
 

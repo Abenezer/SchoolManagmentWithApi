@@ -25,14 +25,22 @@ Slim::registerAutoloader();
 $app = new Slim();
 $app->post('/employee', 'registerEmployee');
 $app->get('/employees', 'getEmployees');
+$app->get('/employee/:id', 'getEmployee');
 $app->put('/employee','updateEmployee');
 $app->delete('/employee/:id','deleteEmployee');
 
 
+
+
 $app->post('/student','registerStudent');
 $app->get('/students', 'getStudents');
+$app->get('/student/:id', 'getStudent');
+$app->get('/studentByName', 'getStudentByName');
+$app->get('/studentByUser', 'getStudentByUserName');
 $app->put('/student','updateStudent');
 $app->delete('/student/:id','deleteStudent');
+
+
 
 
 $app->get('/courses','getCourses');
@@ -62,6 +70,14 @@ function getEmployees()
 
 
 
+}
+
+
+function getEmployee($id)
+{
+    $dao  = new EmployeeDAO();
+    $emp = $dao->getEmployeeById($id);
+    echo json_encode($emp);
 }
 
 
@@ -143,6 +159,64 @@ function getStudents()
 
 }
 
+
+function getStudent($id)
+{
+    $dao = new \DAO\StudentDAO();
+    $enrlDao = new \DAO\EnrollmentDAO();
+    $std= $dao->getStudentById($id);
+    $enrolments = $enrlDao->getEnrollmentByStudentId($id);
+    $std->setEnrollments($enrolments );
+    echo json_encode($std);
+}
+
+function getStudentByName()
+{
+    $request = Slim::getInstance()->request();
+
+
+
+    $fname= $request->get('FirstName');
+    $lname = $request->get('LastName');
+
+
+
+    $dao = new \DAO\StudentDAO();
+    $enrlDao = new \DAO\EnrollmentDAO();
+
+    $std= $dao->getStudentByName($fname,$lname);
+    $enrolments = $enrlDao->getEnrollmentByStudentId($std->getStudentId());
+    $std->setEnrollments($enrolments );
+
+    echo json_encode($std);
+
+
+}
+
+
+function getStudentByUserName()
+{
+    $request = Slim::getInstance()->request();
+
+
+
+    $uname= $request->get('username');
+
+
+
+
+    $dao = new \DAO\StudentDAO();
+    $enrlDao = new \DAO\EnrollmentDAO();
+
+    $std = $dao->getStudentUserName($uname);
+    $enrolments = $enrlDao->getEnrollmentByStudentId($std->getStudentId());
+    $std->setEnrollments($enrolments );
+
+    echo json_encode($std);
+
+
+}
+
 function updateStudent()
 {
     $request = Slim::getInstance()->request();
@@ -221,7 +295,7 @@ function updateCourse()
 function deleteCourse($id)
 {
     $dao = new \DAO\CourseDAO();
-    if( $dao->deleteCourse($dao->getCourseById("021")))
+    if( $dao->deleteCourse($dao->getCourseById($id)))
         echo 'Success deleting course'.$id;
     else die('Error');
 

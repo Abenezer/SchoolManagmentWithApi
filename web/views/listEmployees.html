@@ -1,4 +1,7 @@
 <h2>Employees</h2>
+
+<label> <input class="form-control" ng-model="search.EmpId" placeholder="ID"></label>
+<label style="float: right"><input class="form-control" ng-model="search.EmpName" placeholder="Search..."></label>
 <table class="table table-condensed">
     <thead>
     <tr>
@@ -10,7 +13,7 @@
     </tr>
     </thead>
     <tbody>
-    <tr ng-repeat="Employee in Employees">
+    <tr ng-repeat="Employee in Employees |filter :search">
         <td>{{Employee.EmpName}}</td>
         <td>{{Employee.dob}}</td>
         <td>{{Employee.gender}}</td>

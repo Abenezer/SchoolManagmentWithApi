@@ -36,9 +36,9 @@ class CourseDAO {
     public  function getCourseById($id)
     {
         $sql = "SELECT * FROM course WHERE courseNumber=?";
-        $param = array($id);
-        $query = $this->db->prepare($sql);
 
+        $query = $this->db->prepare($sql);
+        $param = array($id);
          $query->execute($param);
 
         $row = $query->fetch(\PDO::FETCH_ASSOC);

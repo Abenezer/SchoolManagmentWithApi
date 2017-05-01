@@ -35,6 +35,21 @@ class EnrollmentDAO {
 
 
     }
+
+
+    public function getEnrollmentByStudentId($id)
+    {
+        $sql = "SELECT * FROM enrollment WHERE student_Id=?";
+        $query = $this->db->prepare($sql);
+       $query->execute(array($id));
+
+        $res = array();
+            foreach ($query->fetchAll() as $row) {
+
+                array_push($res, $this->create_enrollment($row,true));
+            }
+       return $res;
+    }
     public function getEnrollmentById($student_id,$courseNumber,$isEager)
     {
         $sql = "SELECT * FROM enrollment WHERE student_Id=? AND courseNumber=?" ;

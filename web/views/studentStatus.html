@@ -1,0 +1,46 @@
+<form class="form-inline" style="float: right">
+
+    <input class="form-control" ng-disabled="student" type="text" ng-model="FirstName" placeholder="FirstName">
+    <div class="input-group">
+    <input class="form-control" ng-disabled="student" type="text" ng-model="LastName" placeholder="LastName">
+        <span class="input-group-btn">
+    <button ng-disabled="student" class="btn btn-warning" ng-click="searchByName(FirstName,LastName)" >Search</button>
+            </span>
+    </div>
+</form>
+<form class="form-inline">
+    <div class="input-group">
+<input ng-disabled="student" class="form-control" type="text" ng-model="currentStudent.student_id" placeholder="Id">
+        <span class="input-group-btn">
+<button ng-disabled="student" ng-click="search(currentStudent.student_id)" class="btn btn-primary" >Search</button></span></div>
+</form>
+
+
+<h1>{{currentStudent.FirstName}} {{currentStudent.LastName}}</h1>
+
+
+
+    <label for="approved">Approved:</label>
+
+    <input id="approved"  type="checkbox" ng-disabled="'true'" ng-checked="currentStudent.approved"/>
+
+<table class="table table-condensed">
+    <thead>
+    <tr>
+        <th>CourseNumber</th>
+        <th>CourseName</th>
+        <th>RegistrationDate</th>
+        <th>Semester</th>
+        <th>Year</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr ng-repeat="enrollment in currentStudent.enrollments ">
+        <td>{{enrollment.courseNumber}}</td>
+        <td>{{enrollment.Course.courseName}}</td>
+        <td>{{enrollment.registrationDate}}</td>
+        <td>{{enrollment.semester}}</td>
+        <td>{{enrollment.year}}</td>
+    </tr>
+    </tbody>
+</table>

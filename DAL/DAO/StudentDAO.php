@@ -46,6 +46,26 @@ class StudentDAO
 
     }
 
+    public function getStudentByName($fname, $lname)
+    {
+        $sql = "SELECT * FROM Student WHERE FirstName LIKE ? AND LastName LIKE ?";
+        $query = $this->db->prepare($sql);
+        $query->execute(array("%$fname%","%$lname%"));
+        $row = $query->fetch(\PDO::FETCH_ASSOC);
+        return $this->create_Student($row);
+
+    }
+
+
+    public function getStudentUserName($uname)
+    {
+        $sql = "SELECT * FROM Student WHERE UserName=?";
+        $query = $this->db->prepare($sql);
+        $query->execute(array($uname));
+        $row = $query->fetch(\PDO::FETCH_ASSOC);
+        return $this->create_Student($row);
+
+    }
 
     public function insertStudent(Student $Student)
     {
@@ -105,5 +125,7 @@ class StudentDAO
         return $this->db->lastInsertId("student_Id") ;
 
     }
+
+
 
 }

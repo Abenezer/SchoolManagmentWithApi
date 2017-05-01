@@ -3,55 +3,58 @@
     <meta charset='utf-8'>
     <link href="css/bootstrap.min.css" rel="stylesheet"/>
     <link href="css/style.css" rel="stylesheet"/>
+    <!-- Custom Fonts -->
+    <link href="../home/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+    <!-- Custom CSS -->
+    <!--<link href="../home/css/freelancer.css" rel="stylesheet">-->
     <title>SRMS::Student Record Management System</title>
 
 <body ng-app="SRMSApp" ng-controller="mainCtrl">
 
 <!-- Static navbar -->
-<nav class="navbar navbar-default">
-    <div class="container-fluid">
+<nav class="navbar navbar-default" role="navigation">
+
         <div class="navbar-header">
-            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+            <button type="button" class="navbar-toggle" ng-init="navCollapsed = true" data-toggle="collapse" ng-click="navCollapsed!=navCollapsed">
                 <span class="sr-only">Toggle navigation</span>
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
             </button>
-            <a class="navbar-brand" href="#">Project name</a>
+            <a class="navbar-brand" href="#">SRMS</a>
         </div>
-        <div id="navbar" class="navbar-collapse collapse">
+        <div  class="navbar-collapse collapse" ng-class="!navCollapsed && 'in'" ng-click="navCollapsed = true">
             <ul class="nav navbar-nav">
                 <li class="active"><a href="#/">Home</a></li>
 
                 <li class="dropdown">
 
-                    <a  class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Add<span class="caret"></span></a>
+                    <a class="dropdown-toggle" data-toggle="dropdown"  >Add<span class="caret"></span></a>
 
                     <ul class="dropdown-menu">
-                        <li><a href="#/AddEmployee">Add Employee</a></li>
-                        <li><a href="#/CourseDetail">Course Detail</a></li>
+                        <li  ng-if="role('Admin')" ><a href="#/AddEmployee">Add Employee</a></li>
+                        <li ng-if="role('Admin')" ><a href="#/CourseDetail">Course Detail</a></li>
                         <li role="separator" class="divider"></li>
-                        <li class="dropdown-header">Enrollment</li>
-                        <li><a href="#/EnrollStudent"> Enroll Student</a></li>
+                        <li ng-if="role('Adviser')" ><a href="#/EnrollStudent"> Enroll Student</a></li>
                     </ul>
                 </li>
 
                 <li class="dropdown">
-                    <a  class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Edit <span class="caret"></span></a>
+                    <a  class="dropdown-toggle" data-toggle="dropdown"  >Edit<span class="caret"></span></a>
                     <ul class="dropdown-menu">
-                        <li><a href="#/EditStudent" >Edit Student Profile</a></li>
-                        <li><a href="#/EditEmployee" >Edit Employee Profile</a></li>
+                        <li ng-if="role('Admin')"> <a  href="#/EditStudent" >Edit Student Profile</a></li>
+                        <li ng-if="role('Admin')" ><a href="#/EditEmployee" >Edit Employee Profile</a></li>
 
                     </ul>
 
                 </li>
 
                 <li class="dropdown">
-                    <a class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Report <span class="caret"></span></a>
+                    <a  class="dropdown-toggle" data-toggle="dropdown" >Report<span class="caret"></span></a>
                     <ul  class="dropdown-menu">
-                        <li><a href="#/StudentStatus" >View Student Status</a></li>
-                        <li><a href="#/ApprovedStudents" >View Approved Studnets</a></li>
-                        <li><a href="#/PendingStudents" >View Pending Studnets</a></li>
+                        <li ng-if="role('Adviser Admin Student')" ><a href="#/StudentStatus" >View Student Status</a></li>
+                        <li ng-if="role('Adviser Admin')"><a href="#/ApprovedStudents" >View Approved Studnets</a></li>
+                        <li ng-if="role('Adviser Admin')" ><a href="#/PendingStudents" >View Pending Studnets</a></li>
 
                     </ul>
 
@@ -65,14 +68,13 @@
 
                     <ul class="dropdown-menu">
                         <li ng-click="open()">About</a></li>
-                        <li><a ng-click="logout()" >Logout</a></li>
+                        <li><a ng-click="logout()" >Logout {{user.username}}</a></li>
 
                     </ul>
 
                 </li>
             </ul>
         </div><!--/.nav-collapse -->
-    </div><!--/.container-fluid -->
 </nav>
 
 
@@ -81,7 +83,7 @@
 
 
 
-<div class="container" >
+<div class="container" style="height: 350px; overflow-y: scroll"  >
     <div ng-view  ></div>
 </div>
 
@@ -90,9 +92,64 @@
     <div>
         <alert ng-repeat="alert in alerts" type="{{alert.type}}" close="alert.close()">{{ alert.msg }}</alert>
     </div>
-fotter jkhfjkhlkasfdjldfsa
-jfhdkjshkdfshfkjhdskj
-jkfhksjdhfkjsahkjfadsh
+<!-- Footer -->
+<footer class="text-center navbar-fixed-bottom ">
+    <div class="footer-above  visible-lg visible-md">
+        <div class="container">
+            <div class="row">
+                <div class="footer-col col-md-4">
+                    <h3>Location</h3>
+                    <p><b>Addis Ababa - Ethiopia</b>  </p>
+                    <p> Addis Ababa University </p>
+                    <p> Information Systems </p>
+                </div>
+                <div class="footer-col col-md-4">
+                    <h3>Around the Web</h3>
+                    <ul class="list-inline">
+                        <li>
+                            <a href="#" class="btn-social btn-outline"><i class="fa fa-fw fa-facebook"></i></a>
+                        </li>
+                        <li>
+                            <a href="#" class="btn-social btn-outline"><i class="fa fa-fw fa-google-plus"></i></a>
+                        </li>
+                        <li>
+                            <a href="#" class="btn-social btn-outline"><i class="fa fa-fw fa-twitter"></i></a>
+                        </li>
+                        <li>
+                            <a href="#" class="btn-social btn-outline"><i class="fa fa-fw fa-linkedin"></i></a>
+                        </li>
+                        <li>
+                            <a href="#" class="btn-social btn-outline"><i class="fa fa-fw fa-dribbble"></i></a>
+                        </li>
+                    </ul>
+                </div>
+                <div class="footer-col col-md-4">
+                    <h3>Credit</h3>
+                        <p>
+
+                            Abenezer Meseret ,
+                            Dawit Tessema,
+                            Dawit Hailu,
+                            Mahelate Hailu,
+                            Meseret Reta,
+                            Tigist Degefu,
+
+                        </p>
+                    <p><a href="http://startbootstrap.com">Start Bootstrap</a>.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="footer-below">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12">
+                    Copyright &copy; SRMS.aau.edu.et 2015 AAU Information Systems
+                </div>
+            </div>
+        </div>
+    </div>
+</footer>
 
 <script type="text/javascript" src="js/lib/jquery.min.js"></script>
 <script type="text/javascript" src="js/lib/bootstrap.min.js"></script>

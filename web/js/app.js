@@ -66,84 +66,17 @@ app.factory('AppAlert', function($rootScope){
 });
 
 
-app.service('authService',function(){
-
-    var user = {};
 
 
 
 
 
 
-    return{
-        getUser: function(){
+
+app.controller('mainCtrl',function($scope,$modal,$http,$window,$rootScope){
 
 
-         alert(user.role);
-
-              return user;
-        },
-
-        setUser: function(u)
-        {
-
-            user = u;
-        }
-
-    }
-
-
-});
-
-app.directive('restrict',function(authService){
-
-    return {
-        restrict: 'A',
-        priority: -10000,
-        scope: false,
-
-
-     compile: function(element,attrs,linker)
-        {
-            var accessDenied = true;
-
-
-            var user = authService.getUser();
-
-
-
-
-            var attributes = attrs.access.split(" ");
-            for(var i in attributes)
-            {
-                if(user.role==attributes[i]){
-                    accessDenied= false;
-                }
-            }
-
-            if(accessDenied){
-                element.children().remove();
-                element.remove();
-            }
-        }
-
-
-
-    }
-
-
-
-});
-
-
-
-
-
-
-app.controller('mainCtrl',function($scope,$modal,$http,$window,authService){
-
-
-    $scope.user = {};
+    $rootScope.user = {};
 
 
 
@@ -161,7 +94,7 @@ app.controller('mainCtrl',function($scope,$modal,$http,$window,authService){
         {
 
 
-            $scope.user = true;
+            $rootScope.user = data;
 
 
 
@@ -176,11 +109,19 @@ app.controller('mainCtrl',function($scope,$modal,$http,$window,authService){
 
 
 
-    $scope.role = function(String)
+    $rootScope.role = function(roleString)
     {
-             return
+        var accessDenied = false;
+        var roles = roleString.split(" ");
+        for(var i in roles)
+             if($rootScope.user.role==roles[i])
+             {
+                 accessDenied = true;
+             }
 
-    }
+        return accessDenied;
+
+    };
 
     $scope.admin = true;
 
@@ -638,8 +579,10 @@ function enrollmentController($scope,$http,$filter,AppAlert)
 }
 
 
-function studentStatusCtrl($scope,$http)
+function studentStatusCtrl($scope,$http,$rootScope)
 {
+
+    $scope.student = $rootScope.user.role=='Student';
     $scope.currentStudent = {};
     $scope.currentStudent.approved = 0;
     $scope.search = function(id)
@@ -652,9 +595,17 @@ function studentStatusCtrl($scope,$http)
 
     $scope.searchByName = function(FirstName,LastName)
     {
-        $http.get('../api/student?FirstName='+FirstName+'&LastName='+LastName).success(function(data) {
+        $http.get('../api/studentByName?FirstName='+FirstName+'&LastName='+LastName).success(function(data) {
             $scope.currentStudent = data;
         });
+    }
+
+    if($scope.student )
+    {
+        $http.get('../api/studentByUser?username='+$rootScope.user.username).success(function(data) {
+            $scope.currentStudent = data;
+        });
+
     }
 
 
